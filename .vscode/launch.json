@@ -1,0 +1,98 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "flutter_grocery_app",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart"
+        },
+        {
+            "name": "flutter_grocery_app (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "catalog",
+            "cwd": "packages/catalog",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "catalog (profile mode)",
+            "cwd": "packages/catalog",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "checkout",
+            "cwd": "packages/checkout",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "checkout (profile mode)",
+            "cwd": "packages/checkout",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "home",
+            "cwd": "packages/home",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "home (profile mode)",
+            "cwd": "packages/home",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "repositories",
+            "cwd": "packages/repositories",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "repositories (profile mode)",
+            "cwd": "packages/repositories",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "uikit",
+            "cwd": "packages/uikit",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "uikit (profile mode)",
+            "cwd": "packages/uikit",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "utils",
+            "cwd": "packages/utils",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "utils (profile mode)",
+            "cwd": "packages/utils",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        }
+    ]
+}
