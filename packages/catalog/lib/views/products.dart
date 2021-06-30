@@ -44,23 +44,42 @@ class _ProductListState extends State<ProductList> {
         final products = widget.searchable
             ? state.getFilterProducts(widget.type)
             : state.getProducts(widget.type);
+
+        bool isLoad = products == null;
         return LayoutBuilder(builder: (context, constraints) {
           final column = (constraints.maxWidth / 160).floor();
-
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(
-                column, (index) => buildList(products ?? [], index, column)),
+                column,
+                (index) => isLoad
+                    ? buildSkeletonList()
+                    : buildList(products, index, column)),
           );
         });
       }),
     );
   }
 
-  Expanded buildList(List<Product> list, int slotId, int column) {
+  Widget buildSkeletonList() {
+    return Expanded(
+      child: ListView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          return SkeletonProductView();
+        },
+        itemCount: 1,
+      ),
+    );
+  }
+
+  Widget buildList(List<Product> list, int slotId, int column) {
     int length = (list.length / column).floor();
 
-    int balance = list.length % length;
+    int balance = list.isNotEmpty ? list.length % length : 0;
 
     if (slotId < balance) length++;
     return Expanded(

@@ -3,4 +3,5 @@ export 'components/button.dart';
 export 'components/container.dart';
 export 'components/dialog.dart';
 export 'components/shapes.dart';
+export 'components/skeleton.dart';
 export 'components/themes.dart';

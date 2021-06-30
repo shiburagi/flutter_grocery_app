@@ -180,3 +180,111 @@ class ProductView extends StatelessWidget {
     );
   }
 }
+
+class SkeletonProductView extends StatelessWidget {
+  const SkeletonProductView({
+    Key? key,
+    this.compact = false,
+    this.width,
+    this.height,
+  })  : _imageHeight = compact ? 60 : 120,
+        super(key: key);
+  final double? width;
+  final double? height;
+  final bool compact;
+  final double _imageHeight;
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      margin: EdgeInsets.fromLTRB(8, 4, 4, 4),
+      child: Container(
+        width: width,
+        height: height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Stack(
+              children: [
+                Positioned.fill(
+                  bottom: 10,
+                  child: buildImage(context),
+                ),
+                Positioned(
+                  top: _imageHeight - 30,
+                  left: 0,
+                  right: 0,
+                  child: buildGradient(context),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: _imageHeight - 10),
+                  padding: EdgeInsets.fromLTRB(0, 8, 0, compact ? 0 : 12),
+                  color: Theme.of(context).cardColor,
+                  child: buildProductDetail(),
+                ),
+              ],
+            ),
+            buildBottomBar(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container buildBottomBar(BuildContext context) {
+    return Container(
+      color: Theme.of(context).dividerColor.withOpacity(0.05),
+      padding: EdgeInsets.only(left: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SkeletonText(),
+          LeafButton(
+            child: SkeletonText(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container buildGradient(BuildContext context) {
+    return Container(
+      height: 30,
+    );
+  }
+
+  Container buildImage(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 2,
+      color: Theme.of(context).cardColor,
+      child: SkeletonContainer(),
+    );
+  }
+
+  Column buildProductDetail() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: EdgeInsets.only(right: 48, left: 12),
+          child: SkeletonText(
+            width: 100,
+          ),
+        ),
+        compact
+            ? SizedBox()
+            : Container(
+                padding: EdgeInsets.only(right: 48, left: 12),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: SkeletonText(
+                    width: 40,
+                  ),
+                ),
+              )
+      ],
+    );
+  }
+}

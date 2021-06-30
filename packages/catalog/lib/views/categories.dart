@@ -29,8 +29,8 @@ const _boxWidth = 100.0;
 const _boxHeight = 130.0;
 
 class CategoriesList extends StatefulWidget {
-  const CategoriesList({Key? key}) : super(key: key);
-
+  const CategoriesList({Key? key, this.header}) : super(key: key);
+  final Widget? header;
   @override
   _CategoriesListState createState() => _CategoriesListState();
 }
@@ -48,17 +48,24 @@ class _CategoriesListState extends State<CategoriesList> {
         buildWhen: (previous, current) =>
             previous.categories != current.categories,
         builder: (context, state) {
-          return Container(
-            height: _boxHeight + 8,
-            child: LiveList.options(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index, animation) {
-                  return buildAnimatedItem(
-                      context, state.categories![index], animation);
-                },
-                itemCount: state.categories?.length ?? 0,
-                options: _options),
-          );
+          return state.categories?.isNotEmpty != true
+              ? SizedBox()
+              : Column(
+                  children: [
+                    widget.header ?? SizedBox(),
+                    Container(
+                      height: _boxHeight + 8,
+                      child: LiveList.options(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index, animation) {
+                            return buildAnimatedItem(
+                                context, state.categories![index], animation);
+                          },
+                          itemCount: state.categories?.length ?? 0,
+                          options: _options),
+                    ),
+                  ],
+                );
         });
   }
 

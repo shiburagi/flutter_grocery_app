@@ -56,8 +56,10 @@ class _CatalogPageState extends State<CatalogPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            buildSectionTitle(S.of(context).categories, onViewMore: () {}),
-            CategoriesList(),
+            CategoriesList(
+              header: buildSectionTitle(S.of(context).categories,
+                  onViewMore: () {}),
+            ),
             SuggestionList(
               header: buildSectionTitle(S.of(context).buyagain, onViewMore: () {
                 Navigator.of(context).pushNamed(RoutesPath.product,
