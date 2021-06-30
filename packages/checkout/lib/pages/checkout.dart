@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:auto_animated/auto_animated.dart';
 import 'package:business_logic/blocs/cart.dart';
 import 'package:business_logic/business_logic.dart';
 import 'package:checkout/pages/order_placed.dart';
+import 'package:checkout/views/items_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -48,77 +51,84 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).cardColor,
       appBar: PreferredSize(
         child: Container(
           decoration: BoxDecoration(
               border: Border(
                   bottom: BorderSide(color: Theme.of(context).dividerColor))),
           child: TransparentAppBar(
+            backgroundColor: Theme.of(context).cardColor,
             titleSpacing: 0,
             title: DeliveryLocation(),
           ),
         ),
         preferredSize: Size.fromHeight(kToolbarHeight),
       ),
-      body: SingleChildScrollView(
-        child: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-          return state.carts.isEmpty
-              ? Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    S.of(context).emptycart_msg,
-                    style: AppTextSyle.semiBold().colorDisabled(context),
-                  ),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    buildTitle(context, S.of(context).requesteditems),
-                    buildProductList(state),
-                    Divider(
-                      thickness: 2,
-                    ),
-                    buildTitle(context, S.of(context).paymentdetails),
-                    buildPaymentOption(),
-                    SizedBox(
-                      height: 32,
-                    )
-                  ],
-                );
-        }),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 1000),
+          child: SingleChildScrollView(
+            child: Card(
+              margin: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+              child:
+                  BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+                return state.carts.isEmpty
+                    ? Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          S.of(context).emptycart_msg,
+                          style: AppTextSyle.semiBold().colorDisabled(context),
+                        ),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          CheckoutTitle(title: S.of(context).requesteditems),
+                          ItemsSummary(
+                            suggestionWidget:
+                                widget.suggestionBuilder?.call(context),
+                          ),
+                          Divider(
+                            thickness: 2,
+                          ),
+                          CheckoutTitle(title: S.of(context).paymentdetails),
+                          buildPaymentOption(),
+                          SizedBox(
+                            height: 32,
+                          )
+                        ],
+                      );
+              }),
+            ),
+          ),
+        ),
       ),
       persistentFooterButtons: [
-        BlocBuilder<CartBloc, CartState>(
-            buildWhen: (previous, current) =>
-                previous.totalAmount != current.totalAmount,
-            builder: (context, state) {
-              return Hero(
-                tag: "checkout-button",
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: Size(MediaQuery.of(context).size.width, 48)),
-                  child: Text((state.carts.isEmpty
-                          ? S.of(context).back
-                          : S.of(context).checkout)
-                      .toUpperCase()),
-                  onPressed: state.totalAmount > 0
-                      ? handleCheckout
-                      : () => Navigator.of(context).pop(),
-                ),
-              );
-            }),
+        Center(
+          child: BlocBuilder<CartBloc, CartState>(
+              buildWhen: (previous, current) =>
+                  previous.totalAmount != current.totalAmount,
+              builder: (context, state) {
+                return Hero(
+                  tag: "checkout-button",
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: Size(
+                            min(MediaQuery.of(context).size.width, 980), 48)),
+                    child: Text((state.carts.isEmpty
+                            ? S.of(context).back
+                            : S.of(context).pay)
+                        .toUpperCase()),
+                    onPressed: state.totalAmount > 0
+                        ? handleCheckout
+                        : () => Navigator.of(context).pop(),
+                  ),
+                );
+              }),
+        ),
       ],
-    );
-  }
-
-  Container buildTitle(BuildContext context, String title) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-      child: Text(
-        title,
-        style: AppTextSyle.semiBold().colorPrimaryDark(context),
-      ),
     );
   }
 
@@ -147,120 +157,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
             itemCount: options?.length ?? 0,
             options: _options);
       }),
-    );
-  }
-
-  Widget? suggestionWidget;
-  List<CheckoutStateWidgetBuilder> productListWidgets() => [
-        (state) => buildTitle(context, S.current.peoplealsobought),
-        (state) {
-          suggestionWidget ??=
-              widget.suggestionBuilder?.call(context) ?? SizedBox();
-
-          return suggestionWidget!;
-        },
-        (state) => buildVoucher(state),
-        (state) => buildTotalAmount(state),
-      ];
-  LiveList buildProductList(CartState state) {
-    final widgets = productListWidgets();
-    return LiveList.options(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (context, index, animation) {
-          return FadeAnimated(
-            animation: animation,
-            child: index < state.carts.length
-                ? RequestedItemView(
-                    cart: state.carts[index],
-                  )
-                : widgets[index - state.carts.length](state),
-          );
-        },
-        itemCount: state.carts.length + widgets.length,
-        options: _options);
-  }
-
-  Container buildVoucher(CartState state) => Container(
-        margin: EdgeInsets.symmetric(horizontal: 16),
-        padding: EdgeInsets.fromLTRB(8, 16, 4, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    S.of(context).voucher,
-                    style: AppTextSyle.regular().size14(),
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                    flex: 2,
-                    child: TextField(
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        filled: true,
-                        contentPadding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Theme.of(context).disabledColor,
-                            width: 0.5,
-                          ),
-                        ),
-                      ),
-                    )),
-              ],
-            ),
-          ],
-        ),
-      );
-
-  Widget buildTotalAmount(CartState state) {
-    final totalAmount = state.totalAmount;
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16),
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-      child: Column(
-        children: [
-          Divider(
-            height: 1,
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          ...state.fees?.map((e) {
-                return buildAmount(e.label, e.actualAmount(totalAmount));
-              }) ??
-              [],
-          buildAmount(S.of(context).totalamount, state.totalAmount,
-              style: AppTextSyle.black()),
-        ],
-      ),
-    );
-  }
-
-  Row buildAmount(String label, double amount, {TextStyle? style}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          label,
-          style: AppTextSyle.semiBold().size14(),
-        ),
-        Text(
-          "\$ ${amount.format()}",
-          style: AppTextSyle.bold().size14().merge(style),
-        ),
-      ],
     );
   }
 }
@@ -458,6 +354,21 @@ class _RequestedItemViewState extends State<RequestedItemView> {
           icon,
           size: 12,
         ),
+      ),
+    );
+  }
+}
+
+class CheckoutTitle extends StatelessWidget {
+  const CheckoutTitle({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+      child: Text(
+        title,
+        style: AppTextSyle.semiBold().colorPrimaryDark(context),
       ),
     );
   }

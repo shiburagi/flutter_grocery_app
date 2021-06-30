@@ -28,6 +28,7 @@ dependencies:
 
   coordinator_layout: ^1.0.0+1
   flutter_bloc: ^7.0.1
+  drawerbehavior: ^2.1.2
   
 
 dev_dependencies:

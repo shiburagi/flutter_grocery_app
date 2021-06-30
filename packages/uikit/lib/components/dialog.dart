@@ -16,12 +16,18 @@ Future showPageAsBottomSheet(
         child: Wrap(
           children: [
             KeyboardAvoiding(
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Theme.of(context).dividerColor)),
-                margin: EdgeInsets.fromLTRB(12, 8, 12, 0),
-                child: builder(_context),
-                elevation: 4,
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 600),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        side:
+                            BorderSide(color: Theme.of(context).dividerColor)),
+                    margin: EdgeInsets.fromLTRB(12, 8, 12, 0),
+                    child: builder(_context),
+                    elevation: 4,
+                  ),
+                ),
               ),
             ),
           ],

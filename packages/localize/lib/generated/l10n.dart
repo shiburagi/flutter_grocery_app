@@ -302,6 +302,16 @@ class S {
     );
   }
 
+  /// `Pay`
+  String get pay {
+    return Intl.message(
+      'Pay',
+      name: 'pay',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `profile`
   String get profile {
     return Intl.message(
@@ -417,6 +427,26 @@ class S {
     return Intl.message(
       'Voucher',
       name: 'voucher',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your basket`
+  String get yourbasket {
+    return Intl.message(
+      'Your basket',
+      name: 'yourbasket',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your basket is empty`
+  String get yourbasketisempty {
+    return Intl.message(
+      'Your basket is empty',
+      name: 'yourbasketisempty',
       desc: '',
       args: [],
     );

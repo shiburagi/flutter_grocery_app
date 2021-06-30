@@ -24,6 +24,7 @@
     "optional": "Optional",
     "paymentdetails": "Payment details",
     "peoplealsobought": "People also bought",
+    "pay": "Pay",
     "profile": "profile",
     "requesting": "Requesting",
     "recommendforyou": "Recommend for you",
@@ -35,5 +36,7 @@
     "totalamount": "Total amount",
     "update": "Update",
     "updatebasket": "Update basket",
-    "voucher": "Voucher"
+    "voucher": "Voucher",
+    "yourbasket": "Your basket",
+    "yourbasketisempty": "Your basket is empty"
 }

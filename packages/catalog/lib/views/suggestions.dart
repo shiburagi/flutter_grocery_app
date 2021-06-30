@@ -60,6 +60,7 @@ class _SuggestionListState extends State<SuggestionList> {
           return data.isEmpty
               ? SizedBox()
               : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       child: widget.header,

@@ -6,6 +6,7 @@ class TransparentAppBar extends AppBar {
   TransparentAppBar({
     Widget? title,
     Widget? leading,
+    Color? backgroundColor,
     double? titleSpacing,
     bool automaticallyImplyLeading = true,
     bool? centerTitle,
@@ -17,7 +18,7 @@ class TransparentAppBar extends AppBar {
           leading: leading,
           centerTitle: centerTitle,
           automaticallyImplyLeading: automaticallyImplyLeading,
-          backgroundColor: Colors.transparent,
+          backgroundColor: backgroundColor ?? Colors.transparent,
           title: title,
           iconTheme: IconThemeData(),
         );

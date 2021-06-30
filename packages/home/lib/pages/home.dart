@@ -4,6 +4,8 @@ import 'package:catalog/catalog.dart';
 import 'package:catalog/pages/catalog.dart';
 import 'package:checkout/checkout.dart';
 import 'package:coordinator_layout/coordinator_layout.dart';
+import 'package:drawerbehavior/drawer_scaffold.dart';
+import 'package:drawerbehavior/drawerbehavior.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uikit/components/textfield.dart';
@@ -19,6 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final DrawerScaffoldController controller = DrawerScaffoldController();
+
   @override
   void initState() {
     context.read<UserLocationBloc>().setAddress(UserAddress(
@@ -28,8 +32,29 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CoordinatorLayout(
+    return DrawerScaffold(
+      defaultDirection: Direction.left,
+      drawers: [
+        SideDrawer(
+          percentage: 1,
+          selectedItemId: 1,
+          alignment: Alignment.topLeft,
+          headerView: Container(
+            height: 120,
+            decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(
+                        width: 0.5, color: Theme.of(context).dividerColor))),
+          ),
+          menu: Menu(
+            items: [
+              MenuItem(title: "My Orders", id: 1),
+              MenuItem(title: "Settings", id: 2),
+            ],
+          ),
+        )
+      ],
+      builder: (context, id) => CoordinatorLayout(
         headerMaxHeight: 150,
         headerMinHeight: kToolbarHeight + MediaQuery.of(context).padding.top,
         headers: [
@@ -42,6 +67,13 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, offset, diff) {
                     return HomeHeader(
                       offset: offset,
+                      leading: IconButton(
+                          onPressed: () {
+                            controller.openDrawer(Direction.left);
+                          },
+                          icon: Icon(
+                            Icons.menu,
+                          )),
                     );
                   },
                 ),
@@ -52,11 +84,12 @@ class _HomePageState extends State<HomePage> {
         body: IndexedStack(
           index: 0,
           children: [
-            CatalogPage(),
+            CatalogPage(
+              summaryBuilder: (context) => ItemsSummaryCard(),
+            ),
           ],
         ),
       ),
-      floatingActionButton: CartSummary(),
       bottomNavigationBar: OrderStatusView(),
     );
   }
@@ -66,11 +99,12 @@ class HomeHeader extends StatelessWidget {
   const HomeHeader({
     Key? key,
     required this.offset,
+    this.leading,
   }) : super(key: key);
 
   final double offset;
   final Curve collapseCurves = Curves.easeInOut;
-
+  final Widget? leading;
   @override
   Widget build(BuildContext context) {
     final invertOffset = collapseCurves.transform(1 - offset);
@@ -83,7 +117,7 @@ class HomeHeader extends StatelessWidget {
       child: Stack(
         children: [
           TransparentAppBar(
-            leading: Icon(Icons.menu),
+            leading: leading,
             actions: [buildCartCounter()],
           ),
           Positioned(

@@ -52,7 +52,7 @@ class _ProductsPageState extends State<ProductsPage> {
             type: widget.type == "search" ? null : widget.type,
           ),
         ),
-        floatingActionButton: CartSummary(),
+        floatingActionButton: CartSummaryButton(),
       ),
     );
   }

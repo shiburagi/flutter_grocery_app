@@ -44,24 +44,25 @@ class _ProductListState extends State<ProductList> {
         final products = widget.searchable
             ? state.getFilterProducts(widget.type)
             : state.getProducts(widget.type);
-        final length = products?.length ?? 0;
-        final mid = (length / 2).ceil();
+        return LayoutBuilder(builder: (context, constraints) {
+          final column = (constraints.maxWidth / 160).floor();
 
-        final list1 = products?.sublist(0, mid) ?? [];
-        final list2 = products?.sublist(mid) ?? [];
-
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildList(list1),
-            buildList(list2),
-          ],
-        );
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(
+                column, (index) => buildList(products ?? [], index, column)),
+          );
+        });
       }),
     );
   }
 
-  Expanded buildList(List<Product> list) {
+  Expanded buildList(List<Product> list, int slotId, int column) {
+    int length = (list.length / column).floor();
+
+    int balance = list.length % length;
+
+    if (slotId < balance) length++;
     return Expanded(
       child: LiveList.options(
           padding: EdgeInsets.zero,
@@ -69,9 +70,10 @@ class _ProductListState extends State<ProductList> {
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           itemBuilder: (context, index, animation) {
-            return buildAnimatedItem(context, list[index], animation);
+            int i = index * column + slotId;
+            return buildAnimatedItem(context, list[i], animation);
           },
-          itemCount: list.length,
+          itemCount: length,
           options: _options),
     );
   }

@@ -54,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "orderplaced": MessageLookupByLibrary.simpleMessage("Order placed"),
         "orderplaced_msg": MessageLookupByLibrary.simpleMessage(
             "Your order is being processed"),
+        "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "paymentdetails":
             MessageLookupByLibrary.simpleMessage("Payment details"),
         "peoplealsobought":
@@ -72,6 +73,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalamount": MessageLookupByLibrary.simpleMessage("Total amount"),
         "update": MessageLookupByLibrary.simpleMessage("Update"),
         "updatebasket": MessageLookupByLibrary.simpleMessage("Update basket"),
-        "voucher": MessageLookupByLibrary.simpleMessage("Voucher")
+        "voucher": MessageLookupByLibrary.simpleMessage("Voucher"),
+        "yourbasket": MessageLookupByLibrary.simpleMessage("Your basket"),
+        "yourbasketisempty":
+            MessageLookupByLibrary.simpleMessage("Your basket is empty")
       };
 }
