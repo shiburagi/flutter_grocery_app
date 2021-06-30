@@ -1,6 +1,7 @@
 import 'package:auto_animated/auto_animated.dart';
 import 'package:business_logic/blocs/cart.dart';
 import 'package:checkout/checkout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localize/generated/l10n.dart';
@@ -53,14 +54,17 @@ class _ItemsSummaryState extends State<ItemsSummary> {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (context, index, animation) {
-              return FadeAnimated(
-                animation: animation,
-                child: index < state.carts.length
-                    ? RequestedItemView(
-                        cart: state.carts[index],
-                      )
-                    : widgets[index - state.carts.length](state),
-              );
+              final widget = index < state.carts.length
+                  ? RequestedItemView(
+                      cart: state.carts[index],
+                    )
+                  : widgets[index - state.carts.length](state);
+              return context.isMd
+                  ? widget
+                  : FadeAnimated(
+                      animation: animation,
+                      child: widget,
+                    );
             },
             itemCount: state.carts.length + widgets.length,
             options: _options)
@@ -184,12 +188,15 @@ class ItemsSummaryCard extends StatelessWidget {
               margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
               child:
                   BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-                return ElevatedButton(
-                    onPressed: state.carts.isEmpty
-                        ? null
-                        : () => Navigator.of(context)
-                            .pushNamed(RoutesPath.checkout),
-                    child: Text(S.of(context).checkout.toUpperCase()));
+                return Hero(
+                  tag: "checkout-button",
+                  child: ElevatedButton(
+                      onPressed: state.carts.isEmpty
+                          ? null
+                          : () => Navigator.of(context)
+                              .pushNamed(RoutesPath.checkout),
+                      child: Text(S.of(context).checkout.toUpperCase())),
+                );
               }),
             )
           ],
