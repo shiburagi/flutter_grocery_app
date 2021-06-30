@@ -44,17 +44,20 @@ class _ProductListState extends State<ProductList> {
         final products = widget.searchable
             ? state.getFilterProducts(widget.type)
             : state.getProducts(widget.type);
-
         bool isLoad = products == null;
         return LayoutBuilder(builder: (context, constraints) {
           final column = (constraints.maxWidth / 160).floor();
+          print("$column ${products?.length}");
+
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: List.generate(
-                column,
-                (index) => isLoad
-                    ? buildSkeletonList()
-                    : buildList(products, index, column)),
+            children: isLoad
+                ? List.generate(column, (index) => buildSkeletonList())
+                : List.generate(
+                    column > 2 ? 1 : 2,
+                    (index) => products.isEmpty == true
+                        ? SizedBox()
+                        : buildList(products, index, column)),
           );
         });
       }),
@@ -78,9 +81,7 @@ class _ProductListState extends State<ProductList> {
 
   Widget buildList(List<Product> list, int slotId, int column) {
     int length = (list.length / column).floor();
-
-    int balance = list.isNotEmpty ? list.length % length : 0;
-
+    int balance = length > 0 ? list.length % length : list.length;
     if (slotId < balance) length++;
     return Expanded(
       child: LiveList.options(
@@ -89,8 +90,25 @@ class _ProductListState extends State<ProductList> {
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           itemBuilder: (context, index, animation) {
-            int i = index * column + slotId;
-            return buildAnimatedItem(context, list[i], animation);
+            if (column > 2) {
+              int i = index * column;
+              int size = column * (index + 1) <= list.length ? column : balance;
+              return IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: List.generate(
+                      column,
+                      (index) => Expanded(
+                          child: index < size
+                              ? buildAnimatedItem(
+                                  context, list[i + index], animation)
+                              : SizedBox())),
+                ),
+              );
+            } else {
+              int i = index * column + slotId;
+              return buildAnimatedItem(context, list[i], animation);
+            }
           },
           itemCount: length,
           options: _options),

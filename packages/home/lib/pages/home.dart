@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return DrawerScaffold(
+      controller: controller,
       defaultDirection: Direction.left,
       drawers: [
         SideDrawer(
@@ -48,8 +49,9 @@ class _HomePageState extends State<HomePage> {
           ),
           menu: Menu(
             items: [
-              MenuItem(title: "My Orders", id: 1),
-              MenuItem(title: "Settings", id: 2),
+              MenuItem(title: "Catalog", id: 1),
+              MenuItem(title: "My Orders", id: 2),
+              MenuItem(title: "Settings", id: 3),
             ],
           ),
         )
@@ -69,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                       offset: offset,
                       leading: IconButton(
                           onPressed: () {
-                            controller.openDrawer(Direction.left);
+                            controller.toggle(Direction.left);
                           },
                           icon: Icon(
                             Icons.menu,

@@ -56,6 +56,7 @@ class ProductState {
   List<Product>? getProducts(String? type) {
     if (type == null) return products;
     if (ProductFilter.isBasicFilter(type)) return suggestions[type];
+
     return products?.where((element) => element.type == type).toList();
   }
 

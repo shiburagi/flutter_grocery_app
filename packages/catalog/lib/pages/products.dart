@@ -9,8 +9,11 @@ import 'package:uikit/uikit.dart';
 import 'package:utils/utils.dart';
 
 class ProductsPage extends StatefulWidget {
-  const ProductsPage({Key? key, this.type}) : super(key: key);
+  const ProductsPage({Key? key, this.type, this.summaryBuilder})
+      : super(key: key);
   final String? type;
+  final WidgetBuilder? summaryBuilder;
+
   @override
   _ProductsPageState createState() => _ProductsPageState();
 }
@@ -45,14 +48,28 @@ class _ProductsPageState extends State<ProductsPage> {
           titleSpacing: 0,
           title: buildAppbarTitle(context),
         ),
-        body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: ProductList(
-            searchable: true,
-            type: widget.type == "search" ? null : widget.type,
-          ),
+        body: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: ProductList(
+                  searchable: true,
+                  type: widget.type == "search" ? null : widget.type,
+                ),
+              ),
+            ),
+            Visibility(
+              visible: context.isMd,
+              child: Container(
+                margin: EdgeInsets.only(top: 4, right: 16),
+                child: widget.summaryBuilder?.call(context),
+              ),
+            )
+          ],
         ),
-        floatingActionButton: CartSummaryButton(),
+        floatingActionButton: context.isMd ? null : CartSummaryButton(),
       ),
     );
   }

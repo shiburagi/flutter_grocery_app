@@ -17,7 +17,7 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
-  bool get isMd => MediaQuery.of(context).size.width > 1000;
+  bool get isMd => context.isMd;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +33,13 @@ class _CatalogPageState extends State<CatalogPage> {
                 child: buildMainContent(context),
               ),
             ),
-            isMd
-                ? Container(
-                    margin: EdgeInsets.only(top: isMd ? 4 : 0),
-                    child: widget.summaryBuilder?.call(context),
-                  )
-                : SizedBox(),
+            Visibility(
+              visible: isMd,
+              child: Container(
+                margin: EdgeInsets.only(top: isMd ? 4 : 0),
+                child: widget.summaryBuilder?.call(context),
+              ),
+            )
           ],
         ),
       ),

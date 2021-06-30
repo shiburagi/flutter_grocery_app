@@ -11,6 +11,7 @@ class HomeRoutes {
   static Map<String, WidgetBuilder> routes = {
     RoutesPath.home: (context) => HomePage(),
     RoutesPath.product: (context) => ProductsPage(
+          summaryBuilder: (context) => ItemsSummaryCard(),
           type: ModalRoute.of(context)?.settings.arguments is String
               ? ModalRoute.of(context)?.settings.arguments as String
               : null,

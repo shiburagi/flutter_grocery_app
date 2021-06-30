@@ -64,7 +64,6 @@ class _HorizontalExpandState extends State<HorizontalExpand>
   @override
   void didUpdateWidget(HorizontalExpand oldWidget) {
     if (oldWidget.expand != widget.expand) {
-      print("expand: ${widget.expand}");
       toggle();
     }
     super.didUpdateWidget(oldWidget);
@@ -75,7 +74,6 @@ class _HorizontalExpandState extends State<HorizontalExpand>
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) {
-        print("animate: ${animation.value}");
         return Visibility(
           visible: animation.value != 0,
           child: Opacity(

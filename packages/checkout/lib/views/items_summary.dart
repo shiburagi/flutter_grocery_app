@@ -28,7 +28,14 @@ class _ItemsSummaryState extends State<ItemsSummary> {
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
-        return buildProductList(state);
+        return Hero(
+          tag: "items-summary-container",
+          child: Card(
+            margin: EdgeInsets.zero,
+            elevation: 0,
+            child: buildProductList(state),
+          ),
+        );
       },
     );
   }
