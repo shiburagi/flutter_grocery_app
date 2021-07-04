@@ -47,7 +47,6 @@ class _ProductListState extends State<ProductList> {
         bool isLoad = products == null;
         return LayoutBuilder(builder: (context, constraints) {
           final column = (constraints.maxWidth / 160).floor();
-          print("$column ${products?.length}");
 
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
