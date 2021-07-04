@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         theme: createTheme(
           fontFamily: "Nunito",
         ),
-        themeMode: ThemeMode.light,
+        themeMode: ThemeMode.system,
         darkTheme: createTheme(
           fontFamily: "Nunito",
           brightness: Brightness.dark,
