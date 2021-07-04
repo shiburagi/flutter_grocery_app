@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
-ThemeData createTheme({String? fontFamily, Brightness? brightness}) {
+ThemeData createTheme({
+  String? fontFamily,
+  Brightness? brightness,
+  Color? cardColor,
+  Color? canvasColor,
+  Color? shadowColor,
+}) {
   return ThemeData(
     brightness: brightness,
     fontFamily: fontFamily,
@@ -8,6 +14,9 @@ ThemeData createTheme({String? fontFamily, Brightness? brightness}) {
     primaryColorDark: Colors.green.shade700,
     primaryColor: Color(0xff2ecc71),
     primaryColorLight: Colors.green.shade100,
+    cardColor: cardColor,
+    canvasColor: canvasColor,
+    shadowColor: shadowColor,
   );
 }
 
@@ -44,4 +53,6 @@ extension TextStyleExt on TextStyle {
       copyWith(color: Theme.of(context).primaryColor);
   TextStyle colorPrimaryDark(BuildContext context) =>
       copyWith(color: Theme.of(context).primaryColorDark);
+  TextStyle colorAccent(BuildContext context) =>
+      copyWith(color: Theme.of(context).accentColor);
 }

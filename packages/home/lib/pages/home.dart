@@ -43,9 +43,53 @@ class _HomePageState extends State<HomePage> {
           headerView: Container(
             height: 120,
             decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(
-                        width: 0.5, color: Theme.of(context).dividerColor))),
+              border: Border(
+                bottom: BorderSide(
+                    width: 0.5, color: Theme.of(context).dividerColor),
+              ),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  child: Image.network(
+                    "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=60",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(
+                  width: 16,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Alex Smith",
+                      style: AppTextSyle.semiBold().size18(),
+                    ),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          "12300 points",
+                          style: AppTextSyle.regular()
+                              .size16()
+                              .colorAccent(context),
+                        ),
+                        Icon(
+                          Icons.chevron_right_rounded,
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
           menu: Menu(
             items: [

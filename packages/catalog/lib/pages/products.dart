@@ -99,7 +99,11 @@ class _ProductsPageState extends State<ProductsPage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(title),
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                          color: Theme.of(context).hintColor.withOpacity(1)),
+                    ),
                   ),
                   InkWell(
                     onTap: () {

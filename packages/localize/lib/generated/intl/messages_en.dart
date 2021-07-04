@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "categories": MessageLookupByLibrary.simpleMessage("Categories"),
         "checkout": MessageLookupByLibrary.simpleMessage("Checkout"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
+        "completed": MessageLookupByLibrary.simpleMessage("Completed"),
         "contactsupport":
             MessageLookupByLibrary.simpleMessage("Contact support"),
         "edit": MessageLookupByLibrary.simpleMessage("Edit"),

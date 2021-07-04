@@ -18,7 +18,12 @@ class OrderStatusView extends StatelessWidget {
                 onTap: () => Navigator.of(context).pushNamed(
                     RoutesPath.orderStatus,
                     arguments: state.imcompleteOrder),
-                child: Padding(
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                    top: BorderSide(
+                        color: Theme.of(context).dividerColor, width: 0.5),
+                  )),
                   padding: EdgeInsets.all(16),
                   child: Row(
                     children: [

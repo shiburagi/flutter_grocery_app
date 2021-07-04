@@ -111,6 +111,9 @@ class CartState {
 
   bool get hasImcompleteOrder => imcompleteOrder != null;
 
+  String get estimateDuration =>
+      imcompleteOrder?.estimateDuration ?? S.current.completed;
+
   Cart getCart(Product product) {
     final productId = product.productId;
     final price = product.price;
@@ -174,6 +177,17 @@ extension OrderExt on Order {
         return S.current.orderdelivered_msg;
       default:
         return S.current.orderplaced_msg;
+    }
+  }
+
+  String get estimateDuration {
+    switch (status) {
+      case "collected":
+        return "5-10 minutes";
+      case "delivered":
+        return S.current.completed;
+      default:
+        return "30-40 minutes";
     }
   }
 

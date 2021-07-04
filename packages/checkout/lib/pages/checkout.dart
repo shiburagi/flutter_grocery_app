@@ -44,7 +44,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     });
     if (result != false) {
       context.read<CartBloc>().clearCart();
-      Navigator.of(context).pop();
+      Navigator.of(context).popUntil((r) => r.isFirst);
     }
   }
 
@@ -195,9 +195,11 @@ class PaymentOptionView extends StatelessWidget {
                 color: selected
                     ? Theme.of(context).primaryColor
                     : Theme.of(context).dividerColor)),
-        color: selected ? Theme.of(context).primaryColorLight : null,
         elevation: 2,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Container(
+          color:
+              selected ? Theme.of(context).primaryColor.withOpacity(0.1) : null,
           width: 160,
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(

@@ -56,6 +56,7 @@ class _CategoriesListState extends State<CategoriesList> {
                     Container(
                       height: _boxHeight + 8,
                       child: LiveList.options(
+                          padding: EdgeInsets.only(left: 12),
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index, animation) {
                             return buildAnimatedItem(
@@ -101,8 +102,10 @@ class CategoryView extends StatelessWidget {
   final Category category;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 4, 8, 4),
+    return Card(
+      elevation: 0,
+      color: Theme.of(context).hintColor.withOpacity(0.04),
+      margin: EdgeInsets.fromLTRB(4, 4, 4, 4),
       child: InkWell(
         onTap: () => Navigator.of(context)
             .pushNamed(RoutesPath.product, arguments: category.type),

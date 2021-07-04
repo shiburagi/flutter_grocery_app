@@ -160,6 +160,16 @@ class S {
     );
   }
 
+  /// `Completed`
+  String get completed {
+    return Intl.message(
+      'Completed',
+      name: 'completed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Contact support`
   String get contactsupport {
     return Intl.message(

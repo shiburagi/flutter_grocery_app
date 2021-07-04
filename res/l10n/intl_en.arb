@@ -10,6 +10,7 @@
     "categories": "Categories",
     "checkout": "Checkout",
     "close": "Close",
+    "completed": "Completed",
     "contactsupport": "Contact support",
     "home": "home",
     "n_item": "{howMany, plural, one{1 item} other{{howMany} items}}",
